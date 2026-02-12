@@ -143,14 +143,20 @@ server <- function(input, output) {
     prob <- predict(model, user_data, type = "prob")[, 2]
 
     output$result <- renderText({
-      if (pred == 1) "❌ Loan Will Default"
-      else "✅ Loan Will Be Repaid"
-    })
+   if (prob >= 0.7) {
+    "❌ Loan Will Default (High Risk)"
+   } else {
+    "✅ Loan Will Be Repaid"
+  }
+})
 
     output$probability <- renderText({
-      paste("Probability of Default:", round(prob * 100, 2), "%")
-    })
+     paste("Probability of Default:", round(prob * 100, 2), "%")
+      })
+
   })
 }
+
+
 
 shinyApp(ui = ui, server = server)
